@@ -30,11 +30,12 @@ module WebgenBibtex
 
       def make_citeproc(bibtex, context)
         format_options = context[:config]['tag.bibliography.format']
-        format = CiteProc::Ruby::Formats::Html.new format_options
+        locale = context[:config]['tag.bibliography.locale']
+        locale = context.content_node.lang if locale.nil?
         options = {
           style: context[:config]['tag.bibliography.style'],
-          format: format,
-          locale: 'en'
+          format: CiteProc::Ruby::Formats::Html.new(format_options),
+          locale: locale
         }
         cp = CiteProc::Processor.new options
         cp.import bibtex.to_citeproc

@@ -32,16 +32,21 @@ be set globally or individually in each tag.
   Path to the .bib file, either absolute or relative to the project's `src/`
   directory **(required)**
 
++ `tag.bibliography.format`
+
+  A hash containing formatting options for the
+  [HTML renderer](https://github.com/inukshuk/citeproc-ruby/blob/master/lib/citeproc/ruby/formats/html.rb)
+
++ `tag.bibliography.locale`
+
+  Locale setting to use; defaults to the language setting of the current webgen
+  node, but can be overridden if you want
+
 + `tag.bibliography.style`
 
   The citation style; can be the name of any style file in the
   [official CSL style repository](https://github.com/citation-style-language/styles)
   (defaults to 'apa')
-
-+ `tag.bibliography.format`
-
-  A hash containing formatting options for the
-  [HTML renderer](https://github.com/inukshuk/citeproc-ruby/blob/master/lib/citeproc/ruby/formats/html.rb)
 
 ### Citing individual bibliography items
 
