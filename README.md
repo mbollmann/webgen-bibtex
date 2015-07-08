@@ -11,9 +11,9 @@ files.
 
 The following Ruby packages are required:
 
-+ `bibtex-ruby`
-+ `citeproc-ruby`
-+ `csl-styles`
++ [`bibtex-ruby`](https://github.com/inukshuk/bibtex-ruby)
++ [`citeproc-ruby`](https://github.com/inukshuk/citeproc-ruby)
++ [`csl-styles`](https://github.com/inukshuk/csl-styles)
 
 All of them can be installed via `gem install <package>`.
 
@@ -74,7 +74,7 @@ For example, generate a bibliography containing only entries of type 'book':
 
 ## Contact
 
-For any questions, contact Marcel Bollmann <bollmann@linguistics.rub.de>.
+For any questions, contact Marcel Bollmann (<bollmann@linguistics.rub.de>).
 
 ## License
 
