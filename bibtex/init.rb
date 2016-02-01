@@ -22,6 +22,7 @@ end
 website.config.define_option('tag.bibliography.bibfile', nil, &is_string)
 website.config.define_option('tag.bibliography.style', 'apa', &is_string)
 website.config.define_option('tag.bibliography.format', nil, &symbolic_hash)
+website.config.define_option('tag.bibliography.link_style', nil, &is_string)
 website.config.define_option('tag.bibliography.locale', nil, &is_string)
 
 ### Citing a specific bibtex item
