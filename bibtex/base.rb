@@ -2,6 +2,7 @@
 
 require 'webgen/error'
 require 'webgen/path'
+require_relative 'utils'
 
 module WebgenBibtex
   class Tag

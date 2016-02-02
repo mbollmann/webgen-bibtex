@@ -37,6 +37,11 @@ be set globally or individually in each tag.
   A hash containing formatting options for the
   [HTML renderer](https://github.com/inukshuk/citeproc-ruby/blob/master/lib/citeproc/ruby/formats/html.rb)
 
++ `tag.bibliography.link_style`
+
+  The style of generated links in bibliography entries; one of 'append',
+  'inline', 'both', or 'none' (defaults to 'append')
+
 + `tag.bibliography.locale`
 
   Locale setting to use; defaults to the language setting of the current webgen
@@ -48,9 +53,9 @@ be set globally or individually in each tag.
   [official CSL style repository](https://github.com/citation-style-language/styles)
   (defaults to 'apa')
 
-### Citing individual bibliography items
+### Generate individual bibliography entries
 
-Cite individual items from your BibTeX file like this:
+Produce bibliography entries from individual items in your BibTeX file like this:
 
     {bib_item: 'Smith2005'}
 
@@ -59,7 +64,60 @@ If you want to set additional options, you need to put the citation key in the
 
     {bib_item: {key: 'Smith2005', style: 'chicago-author-date'}}
 
-### Generating bibliographies
+URLs and DOIs contained verbatim in the rendered output will be hyperlinked
+automatically.
+
+### Adding links to bibliography entries
+
+The first of the following fields which is present in a BibTeX entry will be
+used to generate hyperlinks:
+
++ `Webgenlink` (see below)
++ `Url`
++ `Doi`
+
+The following is an example of a `Webgenlink` field:
+
+    Webgenlink = {PDF|http://example.com/work.pdf||Slides|/pub/my-slides.pdf}
+
+Multiple links can be separated by `||`, while each link can *optionally* have a
+title that is separated from the link itself by a single `|`.
+
+Links that contain a protocol (such as `http://`) are copied verbatim, while
+others (such as `/pub/my-slides.pdf`) are treated as internal paths that will be
+resolved by webgen and should be **absolute to the project's root directory.**
+
+(The rationale for inventing a new field is that the nature of hyperlinks
+varies, and it is not uncommon for an entry to have more than one link: for
+example, a download link for the cited work itself -- possibly in various
+formats --, slides of a presentation of the cited work, a poster presenting the
+cited work, an associated website, etc.)
+
+#### Rendering styles for links
+
+The appearance of links in bibliography entries differs depending on the value
+of `tag.bibliography.link_style`:
+
++ "append"
+
+  Links are added to the bibliography entry with their title in square brackets,
+  such as "\[PDF\] \[Slides\]".
+
++ "inline"
+
+  The title of the work will become a hyperlink; only the first link in a
+  `Webgenlink` entry is used.
+
++ "both"
+
+  The first link in a `Webgenlink` entry will be inlined, while any further
+  links will be appended.
+
++ "none" *(or any other value really)*
+
+  Don't generate hyperlinks.
+
+### Generating full bibliographies
 
 Generate a full bibliography of entries in your BibTeX file:
 
