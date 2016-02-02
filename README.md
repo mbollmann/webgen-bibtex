@@ -64,6 +64,8 @@ If you want to set additional options, you need to put the citation key in the
 
     {bib_item: {key: 'Smith2005', style: 'chicago-author-date'}}
 
+URLs contained in the rendered output will be hyperlinked automatically.
+
 ### Adding links to bibliography entries
 
 Bibliographies on websites often contain hyperlinks, but the nature of these
@@ -83,6 +85,10 @@ title that is separated from the link itself by a single `|`.
 Links that contain a protocol (such as `http://`) are copied verbatim, while
 others (such as `/pub/my-slides.pdf`) are treated as internal paths that will be
 resolved by webgen and should be **absolute to the project's root directory.**
+
+If you never need more than one link, you can also use the standard BibTeX `Url`
+field.  If it is present and no `Webgenlink` field exists, it will be used
+instead.
 
 #### Rendering styles for links
 

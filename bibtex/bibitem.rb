@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 
+require 'uri'
 require_relative 'base'
 
 module WebgenBibtex
@@ -11,22 +12,30 @@ module WebgenBibtex
         bib, proc = make_objects(tag, context)
         id = context[:config]['tag.bibliography.key']
         render = proc.render(:bibliography, id: id)[0]
+        render = add_url_hyperlinks(context, render)
 
         bibitem = bib[id]
         linklist = make_linklist(bibitem, context)
         if !linklist.nil? then
-          render_linklist(linklist, bibitem, context, render)
-        else
-          render
+          render = render_linklist(linklist, bibitem, context, render)
         end
+
+        render
       end
 
       private
 
       def self.make_linklist(bibitem, context)
         # Extracts webgen links from a BibTeX item and parses them into a list
-        return if bibitem[:webgenlink].nil?
-        bibentry = bibitem[:webgenlink]
+        if bibitem[:webgenlink].nil?
+          if bibitem[:url].nil? then return
+          else
+            # If "Webgenlink" field doesn't exist, but "Url" exists, use that one
+            bibentry = bibitem[:url]
+          end
+        else
+          bibentry = bibitem[:webgenlink]
+        end
         linklist = Array.new
         # Multiple links should be separated by ||
         entries = bibentry.include?('||') ? bibentry.split("||") : [bibentry]
@@ -92,7 +101,7 @@ module WebgenBibtex
             "<a href=\"" + url + "\">" +
             render[title_start, title.length] +
             "</a>" +
-            render[title_start + title.length, 10000]
+            render[title_start + title.length, 1000000]
         end
       end
 
@@ -101,6 +110,23 @@ module WebgenBibtex
         return "<a href=\"" + url + "\">" +
                "&#91;" + title.to_s + "&#93;" +
                "</a>"
+      end
+
+      def self.add_url_hyperlinks(context, render)
+        # Adds hyperlinks to URLs contained in the rendered output
+        # ---
+        # Note: explicitly added schemes because URI.extract matches very
+        # liberally otherwise (like "HiTS: ...")
+        schemes = ["http", "https", "ftp"]
+        URI.extract(render, schemes) do |url|
+          url_start = render.index(url)
+          render = render[0, url_start] +
+                   "<a href=\"" + url + "\">" +
+                   render[url_start, url.length] +
+                   "</a>" +
+                   render[url_start + url.length, 1000000]
+        end
+        render
       end
     end
   end
