@@ -28,10 +28,14 @@ module WebgenBibtex
       def self.make_linklist(bibitem, context)
         # Extracts webgen links from a BibTeX item and parses them into a list
         if bibitem[:webgenlink].nil?
-          if bibitem[:url].nil? then return
-          else
+          if !bibitem[:url].nil? then
             # If "Webgenlink" field doesn't exist, but "Url" exists, use that one
             bibentry = bibitem[:url]
+          elsif !bibitem[:doi].nil? then
+            # If both don't exist, but "Doi" exists, use that one
+            bibentry = "http://dx.doi.org/#{bibitem[:doi]}"
+          else
+            return
           end
         else
           bibentry = bibitem[:webgenlink]
@@ -125,6 +129,14 @@ module WebgenBibtex
                    render[url_start, url.length] +
                    "</a>" +
                    render[url_start + url.length, 1000000]
+        end
+        render.scan(/\bdoi:\S+/) do |doi|
+          doi_start = render.index(doi)
+          render = render[0, doi_start] +
+                   "<a href=\"http://dx.doi.org/" + doi[4, 1000000] + "\">" +
+                   render[doi_start, doi.length] +
+                   "</a>" +
+                   render[doi_start + doi.length, 1000000]
         end
         render
       end

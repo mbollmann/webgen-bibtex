@@ -64,18 +64,19 @@ If you want to set additional options, you need to put the citation key in the
 
     {bib_item: {key: 'Smith2005', style: 'chicago-author-date'}}
 
-URLs contained in the rendered output will be hyperlinked automatically.
+URLs and DOIs contained verbatim in the rendered output will be hyperlinked
+automatically.
 
 ### Adding links to bibliography entries
 
-Bibliographies on websites often contain hyperlinks, but the nature of these
-links varies, and it is not uncommon for an entry to have more than one link:
-for example, a download link for the cited work itself (possibly in various
-formats), slides of a presentation of the cited work, a poster presenting the
-cited work, an associated website, etc.
+The first of the following fields which is present in a BibTeX entry will be
+used to generate hyperlinks:
 
-For this reason, we use a new BibTeX field `Webgenlink` to store information
-about the desired links, with the following format:
++ `Webgenlink` (see below)
++ `Url`
++ `Doi`
+
+The following is an example of a `Webgenlink` field:
 
     Webgenlink = {PDF|http://example.com/work.pdf||Slides|/pub/my-slides.pdf}
 
@@ -86,9 +87,11 @@ Links that contain a protocol (such as `http://`) are copied verbatim, while
 others (such as `/pub/my-slides.pdf`) are treated as internal paths that will be
 resolved by webgen and should be **absolute to the project's root directory.**
 
-If you never need more than one link, you can also use the standard BibTeX `Url`
-field.  If it is present and no `Webgenlink` field exists, it will be used
-instead.
+(The rationale for inventing a new field is that the nature of hyperlinks
+varies, and it is not uncommon for an entry to have more than one link: for
+example, a download link for the cited work itself -- possibly in various
+formats --, slides of a presentation of the cited work, a poster presenting the
+cited work, an associated website, etc.)
 
 #### Rendering styles for links
 
